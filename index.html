@@ -1,42 +1,93 @@
----
-layout: page
-description: "Thinking will not overcome fear but action will."
----
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="https://oss.dfer.site/df_icon/81x81.png" />
+<title>游戏大厅 | dfer 的试玩仓库</title>
+<style>
+  :root {
+    --bg: #0d1a12;
+    --card: #14241a;
+    --line: rgba(255,255,255,.1);
+    --text: #e8f2ea;
+    --muted: #a9c3ad;
+    --accent: #ffe16b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: "Microsoft YaHei", system-ui, -apple-system, sans-serif; }
+  a { text-decoration: none; color: inherit; }
 
-{% for post in paginator.posts %}
-<div class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-        <h2 class="post-title">
-            {{ post.title }}
-        </h2>
-        {% if post.subtitle %}
-        <h3 class="post-subtitle">
-            {{ post.subtitle }}
-        </h3>
-        {% endif %}
-        <div class="post-content-preview">
-            {{ post.content | strip_html | truncate:200 }}
-        </div>
+  header {
+    padding: 44px 26px 30px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 0%, rgba(62,122,73,.35), transparent 70%);
+  }
+  header h1 { margin: 0; font-size: 40px; letter-spacing: 6px; color: #fff; }
+  header h1 span { color: var(--accent); }
+  header p { margin: 12px 0 0; color: var(--muted); letter-spacing: 2px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 10px 24px 60px;
+  }
+
+  a.game {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  a.game:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,225,107,.45);
+    box-shadow: 0 16px 40px rgba(0,0,0,.45);
+  }
+  a.game .cover { aspect-ratio: 16 / 9; background: #1c3a26; overflow: hidden; }
+  a.game .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  a.game .meta { padding: 16px 18px 18px; }
+  a.game .meta h2 { margin: 0 0 6px; font-size: 20px; letter-spacing: 2px; color: var(--accent); }
+  a.game .meta p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.7; }
+  a.game .tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+  a.game .tag { font-size: 11px; color: #cfe9d0; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 3px 10px; }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 44px;
+    color: rgba(255,255,255,.35);
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 2;
+  }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+  <header>
+    <h1><span>GAMES</span> · 游戏大厅</h1>
+    <p>dfer 的网页游戏试玩仓库</p>
+  </header>
+
+  <div class="grid">
+    <a class="game" href="games/3d-grass-mower/">
+      <div class="cover"><img src="games/3d-grass-mower/cover.svg" alt="3D 割草无双" /></div>
+      <div class="meta">
+        <h2>3D 割草无双</h2>
+        <p>操控勇士，用刀剑与技能收割蜂拥而来的敌人。无限波次、连击计数、技能冷却，红心回血。</p>
+        <div class="tags"><span class="tag">Three.js</span><span class="tag">动作</span><span class="tag">无双割草</span></div>
+      </div>
     </a>
-    <p class="post-meta">
-        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
-    </p>
-</div>
-<hr>
-{% endfor %}
+  </div>
 
-<!-- Pager -->
-{% if paginator.total_pages > 1 %}
-<ul class="pager">
-    {% if paginator.previous_page %}
-    <li class="previous">
-        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
-    </li>
-    {% endif %}
-    {% if paginator.next_page %}
-    <li class="next">
-        <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
+  <footer>
+    作者：<a href="mailto:df_business@qq.com">dfer</a> · QQ 3504725309 · <a href="http://www.dfer.site" target="_blank" rel="noopener">www.dfer.site</a>
+  </footer>
+</body>
+</html>

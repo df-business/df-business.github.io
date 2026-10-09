@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="85%">
+      <stop offset="0%" stop-color="#2e5a3b"/>
+      <stop offset="55%" stop-color="#1c3a26"/>
+      <stop offset="100%" stop-color="#0d1f14"/>
+    </radialGradient>
+    <linearGradient id="blade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#ffe16b"/>
+      <stop offset="100%" stop-color="#ff8c3b"/>
+    </linearGradient>
+    <radialGradient id="slash" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7d0" stop-opacity="0.95"/>
+      <stop offset="70%" stop-color="#ffe16b" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ffe16b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg)"/>
+
+  <!-- 地面草丛 -->
+  <g fill="#315f3c">
+    <path d="M0 675 L0 560 Q80 520 160 555 Q240 590 320 545 Q400 500 480 555 Q560 610 640 545 Q720 480 800 555 Q880 630 960 545 Q1040 460 1120 545 Q1160 575 1200 545 L1200 675 Z"/>
+  </g>
+  <g fill="#3c7a49" opacity="0.9">
+    <path d="M0 675 L0 600 Q120 560 240 600 Q360 640 480 595 Q600 550 720 600 Q840 650 960 595 Q1080 540 1200 600 L1200 675 Z"/>
+  </g>
+  <g stroke="#5a9c64" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85">
+    <path d="M120 640 q-14 -60 -40 -92"/>
+    <path d="M150 645 q2 -64 -16 -98"/>
+    <path d="M330 640 q-10 -56 -34 -88"/>
+    <path d="M560 630 q-8 -60 -32 -90"/>
+    <path d="M790 645 q-12 -58 -36 -92"/>
+    <path d="M1010 635 q-10 -60 -34 -90"/>
+    <path d="M670 650 q-6 -50 -26 -80"/>
+  </g>
+
+  <!-- 敌人剪影（圆润小怪） -->
+  <g>
+    <circle cx="960" cy="300" r="34" fill="#ff5f4f"/>
+    <circle cx="980" cy="288" r="7" fill="#1a120c"/>
+    <circle cx="944" cy="288" r="7" fill="#1a120c"/>
+    <circle cx="1050" cy="360" r="26" fill="#ff9c2d"/>
+    <circle cx="1063" cy="351" r="6" fill="#1a120c"/>
+    <circle cx="1038" cy="351" r="6" fill="#1a120c"/>
+    <circle cx="900" cy="410" r="30" fill="#ff5f4f"/>
+    <circle cx="912" cy="400" r="6" fill="#1a120c"/>
+    <circle cx="890" cy="400" r="6" fill="#1a120c"/>
+  </g>
+
+  <!-- 刀光弧 -->
+  <g transform="translate(430 320)">
+    <path d="M 0 0 L 260 -120 A 290 290 0 0 1 300 60 Z" fill="url(#slash)"/>
+    <path d="M 0 0 L 250 -110 A 280 280 0 0 1 285 52 Z" fill="#ffffff" opacity="0.55"/>
+  </g>
+
+  <!-- 战刀 -->
+  <g transform="translate(400 250) rotate(24)">
+    <path d="M 0 0 L 320 10 L 300 34 L 0 26 Z" fill="url(#blade)" stroke="#fff4c8" stroke-width="2"/>
+    <rect x="-40" y="-14" width="60" height="26" rx="8" fill="#6b4a2b"/>
+    <rect x="18" y="0" width="30" height="6" rx="3" fill="#3a2a18"/>
+    <rect x="18" y="20" width="30" height="6" rx="3" fill="#3a2a18"/>
+  </g>
+
+  <!-- 粒子 -->
+  <g fill="#ffe16b">
+    <circle cx="620" cy="220" r="5"/>
+    <circle cx="700" cy="260" r="3"/>
+    <circle cx="560" cy="150" r="4"/>
+    <circle cx="800" cy="330" r="4"/>
+    <circle cx="640" cy="420" r="3"/>
+    <circle cx="760" cy="170" r="3"/>
+    <circle cx="500" cy="430" r="4"/>
+  </g>
+
+  <!-- 标题 -->
+  <text x="60" y="140" font-family="'Microsoft YaHei', system-ui, sans-serif" font-size="96" font-weight="900" fill="#ffe16b" letter-spacing="10">割草无双</text>
+  <text x="64" y="188" font-family="'Microsoft YaHei', system-ui, sans-serif" font-size="30" fill="#cfe9d0" letter-spacing="6">刀剑与技能，收割蜂拥的敌人</text>
+</svg>
