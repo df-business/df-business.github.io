@@ -1,25 +1,22 @@
----
-layout: default
-description: "你来到了没有知识的荒原 🙊"
-header-img: "img/404-bg.jpg"
-permalink: /404.html
----
-
-
-<!-- Page Header -->
-<header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-				<div class="site-heading" id="tag-heading">
-					<h1>404</h1>
-					<span class="subheading">{{ page.description }}</span>
-				</div>
-			</div>
-		</div>
-	</div>
-</header>
-
-<script>
-	document.body.classList.add('page-fullscreen');
-</script>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="https://oss.dfer.site/df_icon/81x81.png" />
+<title>404 · 游戏大厅</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0d1a12; color: #e8f2ea; font-family: "Microsoft YaHei", system-ui, sans-serif; }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px; }
+  h1 { font-size: 72px; margin: 0; color: #ffe16b; letter-spacing: 4px; }
+  p { color: #a9c3ad; letter-spacing: 2px; }
+  a { margin-top: 18px; padding: 12px 34px; color: #1a2c14; background: linear-gradient(135deg, #ffe16b, #ffb347); border-radius: 999px; text-decoration: none; font-weight: 800; letter-spacing: 2px; }
+  a:hover { transform: translateY(-2px); }
+</style>
+</head>
+<body>
+  <h1>404</h1>
+  <p>页面不存在，回到游戏大厅逛逛吧</p>
+  <a href="/">返回游戏大厅</a>
+</body>
+</html>
