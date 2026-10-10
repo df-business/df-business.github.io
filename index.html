@@ -27,6 +27,27 @@
   header h1 span { color: var(--accent); }
   header p { margin: 12px 0 0; color: var(--muted); letter-spacing: 2px; }
 
+  .usage {
+    max-width: 360px;
+    margin: 22px auto 0;
+    padding: 12px 16px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  .usage .label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .usage .label b { color: var(--accent); font-size: 15px; font-weight: 700; }
+  .usage .label .pct { color: #cfe9d0; font-size: 12px; }
+  .usage .bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,.09); overflow: hidden; }
+  .usage .bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, #ffe16b, #ffb347); transition: width .4s ease; }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -57,6 +78,8 @@
   a.game .meta p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.7; }
   a.game .tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
   a.game .tag { font-size: 11px; color: #cfe9d0; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 3px 10px; }
+  a.game .size { position: absolute; top: 10px; right: 10px; font-size: 11px; color: #fff; background: rgba(0,0,0,.5); border-radius: 999px; padding: 3px 9px; }
+  a.game .cover-wrap { position: relative; }
 
   footer {
     text-align: center;
@@ -73,29 +96,72 @@
   <header>
     <h1><span>GAMES</span> · 游戏大厅</h1>
     <p>dfer 的网页游戏试玩仓库</p>
+    <div class="usage">
+      <div class="label">
+        <span>已用 <b id="usage-used">0 MB</b></span>
+        <span class="pct" id="usage-pct">0%</span>
+        <span>总量 <b id="usage-total">1 GB</b></span>
+      </div>
+      <div class="bar"><i id="usage-bar"></i></div>
+    </div>
   </header>
 
-  <div class="grid">
-    <a class="game" href="games/3d-grass-mower/" target="_blank" rel="noopener">
-      <div class="cover"><img src="games/3d-grass-mower/cover.svg" alt="3D 割草无双" /></div>
-      <div class="meta">
-        <h2>3D 割草无双</h2>
-        <p>操控勇士，用刀剑与技能收割蜂拥而来的敌人。无限波次、连击计数、技能冷却，红心回血。</p>
-        <div class="tags"><span class="tag">Three.js</span><span class="tag">动作</span><span class="tag">无双割草</span></div>
-      </div>
-    </a>
-    <a class="game" href="games/yiling-jianxian/" target="_blank" rel="noopener">
-      <div class="cover"><img src="games/yiling-jianxian/cover.svg" alt="夷陵剑仙" /></div>
-      <div class="meta">
-        <h2>夷陵剑仙</h2>
-        <p>仗剑江湖，斩妖除魔。Dora SSR 引擎打造的动作仙侠闯关。</p>
-        <div class="tags"><span class="tag">Dora SSR</span><span class="tag">仙侠</span><span class="tag">动作</span></div>
-      </div>
-    </a>
-  </div>
+  <div class="grid" id="grid"></div>
 
   <footer>
     作者：<a href="mailto:df_business@qq.com">dfer</a> · QQ 3504725309 · <a href="http://www.dfer.site" target="_blank" rel="noopener">www.dfer.site</a>
   </footer>
+
+<script>
+const QUOTA_BYTES = 1024 * 1024 * 1024;
+
+const GAMES = [
+  {
+    href: "games/3d-grass-mower/",
+    cover: "games/3d-grass-mower/cover.svg",
+    title: "3D 割草无双",
+    desc: "操控勇士，用刀剑与技能收割蜂拥而来的敌人。无限波次、连击计数、技能冷却，红心回血。",
+    tags: ["Three.js", "动作", "无双割草"],
+    bytes: 1309661
+  },
+  {
+    href: "games/yiling-jianxian/",
+    cover: "games/yiling-jianxian/cover.svg",
+    title: "夷陵剑仙",
+    desc: "仗剑江湖，斩妖除魔。Dora SSR 引擎打造的动作仙侠闯关。",
+    tags: ["Dora SSR", "仙侠", "动作"],
+    bytes: 177986568
+  }
+];
+
+function fmtBytes(bytes) {
+  if (bytes >= 1024 * 1024 * 1024) return (bytes / 1024 / 1024 / 1024).toFixed(2) + " GB";
+  if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(2) + " MB";
+  return (bytes / 1024).toFixed(2) + " KB";
+}
+
+const grid = document.getElementById("grid");
+let used = 0;
+for (const g of GAMES) {
+  used += g.bytes;
+  const a = document.createElement("a");
+  a.className = "game";
+  a.href = g.href;
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.innerHTML =
+    '<div class="cover-wrap"><div class="cover"><img src="' + g.cover + '" alt="' + g.title + '" /></div>' +
+    '<span class="size">' + fmtBytes(g.bytes) + '</span></div>' +
+    '<div class="meta"><h2>' + g.title + '</h2><p>' + g.desc + '</p>' +
+    '<div class="tags">' + g.tags.map(t => '<span class="tag">' + t + '</span>').join("") + '</div></div>';
+  grid.appendChild(a);
+}
+
+document.getElementById("usage-used").textContent = fmtBytes(used);
+document.getElementById("usage-total").textContent = fmtBytes(QUOTA_BYTES);
+const pct = Math.min(100, used / QUOTA_BYTES * 100);
+document.getElementById("usage-pct").textContent = pct.toFixed(1) + "%";
+document.getElementById("usage-bar").style.width = Math.max(0.5, pct) + "%";
+</script>
 </body>
 </html>
