@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1a2e"/>
+      <stop offset="55%" stop-color="#16324a"/>
+      <stop offset="100%" stop-color="#2b4a58"/>
+    </linearGradient>
+    <linearGradient id="blade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#d7f6ff"/>
+      <stop offset="100%" stop-color="#8fd8e8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eaffff" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#9fdcff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#9fdcff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mountain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c3d4d"/>
+      <stop offset="100%" stop-color="#0a1a26"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#sky)"/>
+
+  <!-- 月亮 -->
+  <circle cx="930" cy="150" r="78" fill="#e8f7ff" opacity="0.9"/>
+  <circle cx="910" cy="138" r="78" fill="url(#sky)" opacity="0.55"/>
+
+  <!-- 远山 -->
+  <path d="M0 470 L160 300 L300 420 L470 260 L640 430 L820 300 L1000 440 L1200 330 L1200 675 L0 675 Z" fill="url(#mountain)" opacity="0.9"/>
+  <path d="M0 540 L200 420 L380 520 L560 400 L760 520 L940 420 L1200 520 L1200 675 L0 675 Z" fill="#0c202c"/>
+
+  <!-- 剑气弧 -->
+  <g transform="translate(420 330)">
+    <path d="M 0 0 L 280 -140 A 330 330 0 0 1 330 80 Z" fill="url(#glow)"/>
+    <path d="M 0 0 L 268 -132 A 318 318 0 0 1 312 72 Z" fill="#ffffff" opacity="0.4"/>
+  </g>
+
+  <!-- 长剑 -->
+  <g transform="translate(400 260) rotate(26)">
+    <path d="M 0 0 L 360 8 L 336 30 L 0 24 Z" fill="url(#blade)" stroke="#eaffff" stroke-width="2"/>
+    <rect x="-36" y="-14" width="50" height="18" rx="6" fill="#27424a"/>
+    <rect x="-36" y="6" width="50" height="6" rx="3" fill="#12242c"/>
+    <circle cx="-14" cy="-5" r="5" fill="#9fdcff"/>
+  </g>
+
+  <!-- 飘散花瓣/粒子 -->
+  <g fill="#ffd9ec">
+    <ellipse cx="700" cy="180" rx="7" ry="4" opacity="0.85"/>
+    <ellipse cx="560" cy="150" rx="5" ry="3" opacity="0.7"/>
+    <ellipse cx="820" cy="430" rx="6" ry="4" opacity="0.75"/>
+    <ellipse cx="500" cy="470" rx="5" ry="3" opacity="0.7"/>
+    <ellipse cx="640" cy="520" rx="6" ry="4" opacity="0.8"/>
+    <ellipse cx="880" cy="300" rx="5" ry="3" opacity="0.7"/>
+  </g>
+
+  <!-- 标题 -->
+  <text x="60" y="150" font-family="'Microsoft YaHei', system-ui, sans-serif" font-size="96" font-weight="900" fill="#eaffff" letter-spacing="14">夷陵剑仙</text>
+  <text x="64" y="200" font-family="'Microsoft YaHei', system-ui, sans-serif" font-size="30" fill="#bfe6ff" letter-spacing="6">仗剑江湖，斩妖除魔</text>
+</svg>
