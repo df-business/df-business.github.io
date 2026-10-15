@@ -411,6 +411,7 @@ addEventListener('mousemove', e => {
   if (document.pointerLockElement === renderer.domElement) {
     cameraYaw -= e.movementX * 0.0035;
     cameraPitch = Math.max(0.15, Math.min(1.3, cameraPitch + e.movementY * 0.003));
+    faceForward();
   }
 });
 
@@ -442,7 +443,7 @@ function startGame() {
   started = true; over = false;
   playerHp = 100; kills = 0; combo = 0; wave = 1; aliveCount = 0; hpScale = 1;
   spawnAcc = 0; waveTimer = 0; attackCd = 0; dashT = 0; invul = 0; hurtFlash = 0;
-  player.position.set(0, 0, 0); player.rotation.y = 0; cameraYaw = -Math.PI / 4;
+  player.position.set(0, 0, 0); cameraYaw = -Math.PI / 4; faceForward();
   swing = 0; player.userData.pivot.rotation.y = 0;
   for (const s of slashPool) { s.life = 0; s.m.visible = false; }
   velY = 0; grounded = true; jumps = 0; mouseDown = false;
@@ -517,15 +518,20 @@ function killEnemy(e) {
   sfx('die');
 }
 
+function faceForward() {
+  player.rotation.y = cameraYaw;
+  return cameraYaw;
+}
 function attack() {
   if (attackCd > 0) return;
   attackCd = 0.32; swing = 0.28;
-  const n = hitArc(player.position.x, player.position.z, player.rotation.y, ATTACK_RADIUS, ATTACK_HALF_ANGLE, 36, 5);
+  const facing = faceForward();
+  const n = hitArc(player.position.x, player.position.z, facing, ATTACK_RADIUS, ATTACK_HALF_ANGLE, 36, 5);
   const s = slashPool.find(o => o.life <= 0);
   if (s) {
     s.life = 0.18; s.max = 0.18; s.m.visible = true;
     s.m.position.copy(player.position); s.m.position.y += 0.85;
-    s.m.rotation.y = player.rotation.y;
+    s.m.rotation.y = facing;
   }
   sfx(n ? 'hit' : 'slash');
 }
@@ -545,7 +551,7 @@ function castWhirlwind() {
 }
 function castDash() {
   if (useSkill('e')) {
-    const f = player.rotation.y;
+    const f = faceForward();
     dashDirX = Math.sin(f); dashDirZ = Math.cos(f);
     dashT = 0.22; dashLen = 8; invul = Math.max(invul, 0.3);
     sfx('dash');
@@ -563,7 +569,7 @@ function castBoom() {
 }
 function dodge() {
   if (useSkill('shift')) {
-    const f = player.rotation.y;
+    const f = faceForward();
     dashDirX = Math.sin(f); dashDirZ = Math.cos(f);
     dashT = 0.18; dashLen = 5; invul = 0.35;
     sfx('dash');
@@ -623,7 +629,8 @@ function animate() {
     let vx = fx * fwd + rx * strafe;
     let vz = fz * fwd + rz * strafe;
     const vl = Math.hypot(vx, vz);
-    if (vl > 0.0001) { vx /= vl; vz /= vl; if (dashT <= 0) player.rotation.y = Math.atan2(vx, vz); }
+    if (vl > 0.0001) { vx /= vl; vz /= vl; }
+    faceForward();
 
     let spd = 8;
     if (dashT > 0) {
