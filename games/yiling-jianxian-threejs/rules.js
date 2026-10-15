@@ -1,0 +1,1 @@
+const u=1337.6000000000001,y=941*.8;function x(t,n){return((t+n*.5)%n+n)%n-n*.5}function i(t,n){return t>=-496&&t<=496&&n>=-252&&n<=250}function o(t,n,l){const c=t.x+n,f=t.y+l;if(t.fly){t.x=c,t.y=f;return}i(x(c,u),x(t.y,y))&&(t.x=c),i(x(t.x,u),x(f,y))&&(t.y=f)}export{y as TILE_HEIGHT,u as TILE_WIDTH,x as cityLocalCoord,i as cityWalkable,o as moveHero};
