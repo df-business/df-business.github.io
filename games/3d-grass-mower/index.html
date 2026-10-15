@@ -67,6 +67,7 @@
   <p><span class="keycap">W A S D</span>移动&nbsp;&nbsp;<span class="keycap">鼠标</span>转向（点击锁定）</p>
   <p><span class="keycap">长按左键</span>连续攻击&nbsp;&nbsp;<span class="keycap">Q</span>旋风斩&nbsp;&nbsp;<span class="keycap">E</span>冲刺&nbsp;&nbsp;<span class="keycap">R</span>天崩地裂</p>
   <p><span class="keycap">Shift</span>闪避&nbsp;&nbsp;<span class="keycap">空格</span>二段跳&nbsp;&nbsp;<span class="keycap">拾取</span>红心回血</p>
+  <p><span class="keycap">Esc</span>返回游戏大厅</p>
   <button class="btn" id="startBtn">开始战斗</button>
   <div id="credits">
     作者：<b>dfer</b><br>
@@ -370,7 +371,21 @@ function sfx(type) {
 const keys = {};
 let mouseDown = false;
 let velY = 0, grounded = true, jumps = 0;
+let returningHome = false, pointerWasLocked = false;
+function returnToHome() {
+  if (returningHome) return;
+  returningHome = true; mouseDown = false;
+  if (document.pointerLockElement) document.exitPointerLock();
+  window.location.assign(new URL('../../', window.location.href).href);
+}
+document.addEventListener('pointerlockchange', () => {
+  const locked = document.pointerLockElement === renderer.domElement;
+  // 部分浏览器会吞掉锁定鼠标时的 Esc，只发送解锁事件。
+  if (pointerWasLocked && !locked && started && document.hasFocus()) returnToHome();
+  pointerWasLocked = locked;
+});
 addEventListener('keydown', e => {
+  if (e.code === 'Escape') { e.preventDefault(); returnToHome(); return; }
   if (e.target && (e.target.tagName === 'BUTTON')) return;
   keys[e.code] = true;
   if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
