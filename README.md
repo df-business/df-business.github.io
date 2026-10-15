@@ -11,7 +11,6 @@ dfer 的网页游戏试玩仓库，托管于 GitHub Pages。
 ├── 404.html            # 404 页面
 └── games/              # 游戏目录，每个游戏一个子目录
     ├── 3d-grass-mower/          # 3D 割草无双
-    ├── yiling-jianxian/        # 夷陵剑仙 Dora SSR 原版
     └── yiling-jianxian-threejs/ # 夷陵剑仙 Three.js 版
 ```
 
