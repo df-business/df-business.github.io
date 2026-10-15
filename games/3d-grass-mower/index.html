@@ -67,7 +67,7 @@
   <p><span class="keycap">W A S D</span>移动&nbsp;&nbsp;<span class="keycap">鼠标</span>转向（点击锁定）</p>
   <p><span class="keycap">长按左键</span>连续攻击&nbsp;&nbsp;<span class="keycap">Q</span>旋风斩&nbsp;&nbsp;<span class="keycap">E</span>冲刺&nbsp;&nbsp;<span class="keycap">R</span>天崩地裂</p>
   <p><span class="keycap">Shift</span>闪避&nbsp;&nbsp;<span class="keycap">空格</span>二段跳&nbsp;&nbsp;<span class="keycap">拾取</span>红心回血</p>
-  <p><span class="keycap">Esc</span>返回游戏大厅</p>
+  <p><span class="keycap">Esc</span>返回游戏初始界面</p>
   <button class="btn" id="startBtn">开始战斗</button>
   <div id="credits">
     作者：<b>dfer</b><br>
@@ -88,6 +88,7 @@ const comboEl = document.getElementById('combo-n');
 const vignette = document.getElementById('damage-vignette');
 const overlay = document.getElementById('overlay');
 const startBtn = document.getElementById('startBtn');
+const initialMenuHTML = overlay.innerHTML;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -371,21 +372,23 @@ function sfx(type) {
 const keys = {};
 let mouseDown = false;
 let velY = 0, grounded = true, jumps = 0;
-let returningHome = false, pointerWasLocked = false;
-function returnToHome() {
-  if (returningHome) return;
-  returningHome = true; mouseDown = false;
+let pointerWasLocked = false;
+function returnToStart() {
+  started = false; over = false; mouseDown = false;
+  for (const key of Object.keys(keys)) delete keys[key];
+  overlay.innerHTML = initialMenuHTML;
+  overlay.style.display = 'flex';
+  document.getElementById('startBtn').addEventListener('click', startGame);
   if (document.pointerLockElement) document.exitPointerLock();
-  window.location.assign(new URL('../../', window.location.href).href);
 }
 document.addEventListener('pointerlockchange', () => {
   const locked = document.pointerLockElement === renderer.domElement;
   // 部分浏览器会吞掉锁定鼠标时的 Esc，只发送解锁事件。
-  if (pointerWasLocked && !locked && started && document.hasFocus()) returnToHome();
+  if (pointerWasLocked && !locked && started && document.hasFocus()) returnToStart();
   pointerWasLocked = locked;
 });
 addEventListener('keydown', e => {
-  if (e.code === 'Escape') { e.preventDefault(); returnToHome(); return; }
+  if (e.code === 'Escape') { e.preventDefault(); returnToStart(); return; }
   if (e.target && (e.target.tagName === 'BUTTON')) return;
   keys[e.code] = true;
   if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
