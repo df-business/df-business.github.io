@@ -11,7 +11,7 @@ dfer 的网页游戏试玩仓库，托管于 GitHub Pages。
 ├── 404.html            # 404 页面
 └── games/              # 游戏目录，每个游戏一个子目录
     ├── 3d-grass-mower/          # 3D 割草无双
-    └── yiling-jianxian-threejs/ # 夷陵剑仙 Three.js 版
+    └── yiling-jianxian-threejs/ # 夷陵剑仙
 ```
 
 ## 如何新增一个游戏
@@ -20,7 +20,7 @@ dfer 的网页游戏试玩仓库，托管于 GitHub Pages。
 2. 在首页 `index.html` 的 `GAMES` 数组中新增配置，填写入口、封面、中文介绍、标签和目录实际字节数。
 3. 提交并推送到 `2.x` 分支（GitHub Pages 的部署源分支）即可自动发布。
 
-## 夷陵剑仙 Three.js 版
+## 夷陵剑仙
 
 入口：https://df-business.github.io/games/yiling-jianxian-threejs/
 
