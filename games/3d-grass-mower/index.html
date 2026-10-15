@@ -163,7 +163,7 @@ function buildPlayer() {
   const blade = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.09, 1.7), new THREE.MeshLambertMaterial({ color: 0xe8eaf0 }));
   blade.position.set(0.55, 0.1, 0.55); blade.castShadow = true;
   const tip = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.45, 6), new THREE.MeshLambertMaterial({ color: 0xe8eaf0 }));
-  tip.rotation.x = -Math.PI / 2; tip.position.set(0.55, 0.1, 1.5);
+  tip.rotation.x = Math.PI / 2; tip.position.set(0.55, 0.1, 1.5);
   const guard = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.05, 0.05), dark);
   guard.position.set(0.55, 0.1, 0.45);
   const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.3, 6), dark);
@@ -258,17 +258,19 @@ function fanGeom(radius, angle) {
   for (let i = 0; i < seg; i++) {
     const a0 = -angle / 2 + angle * (i / seg);
     const a1 = -angle / 2 + angle * ((i + 1) / seg);
-    pos.push(0, 0, 0, radius * Math.cos(a0), 0, radius * Math.sin(a0), radius * Math.cos(a1), 0, radius * Math.sin(a1));
+    // 人物局部 +Z 为正前方；几何已在 XZ 地面，无需再绕 X 轴旋转。
+    pos.push(0, 0, 0, radius * Math.sin(a0), 0, radius * Math.cos(a0), radius * Math.sin(a1), 0, radius * Math.cos(a1));
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   return g;
 }
-const slashFan = fanGeom(3.4, Math.PI * 0.75);
+const ATTACK_RADIUS = 3.4, ATTACK_HALF_ANGLE = Math.PI * 0.375;
+const slashFan = fanGeom(ATTACK_RADIUS, ATTACK_HALF_ANGLE * 2);
 const slashPool = [];
 for (let i = 0; i < 6; i++) {
   const m = new THREE.Mesh(slashFan, new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
-  m.position.y = 0.85; m.rotation.x = -Math.PI / 2; m.visible = false;
+  m.position.y = 0.85; m.visible = false;
   scene.add(m); slashPool.push({ m, life: 0 });
 }
 const ringGeo = new THREE.RingGeometry(0.85, 1, 48);
@@ -426,6 +428,8 @@ function startGame() {
   playerHp = 100; kills = 0; combo = 0; wave = 1; aliveCount = 0; hpScale = 1;
   spawnAcc = 0; waveTimer = 0; attackCd = 0; dashT = 0; invul = 0; hurtFlash = 0;
   player.position.set(0, 0, 0); player.rotation.y = 0; cameraYaw = -Math.PI / 4;
+  swing = 0; player.userData.pivot.rotation.y = 0;
+  for (const s of slashPool) { s.life = 0; s.m.visible = false; }
   velY = 0; grounded = true; jumps = 0; mouseDown = false;
   for (const e of enemies) { e.alive = false; e.dying = 0; }
   for (const d of drops) { d.life = 0; d.sp.visible = false; }
@@ -501,9 +505,13 @@ function killEnemy(e) {
 function attack() {
   if (attackCd > 0) return;
   attackCd = 0.32; swing = 0.28;
-  const n = hitArc(player.position.x, player.position.z, player.rotation.y, 3.4, Math.PI * 0.75, 36, 5);
+  const n = hitArc(player.position.x, player.position.z, player.rotation.y, ATTACK_RADIUS, ATTACK_HALF_ANGLE, 36, 5);
   const s = slashPool.find(o => o.life <= 0);
-  if (s) { s.life = 0.18; s.max = 0.18; s.m.visible = true; s.m.rotation.y = player.rotation.y; }
+  if (s) {
+    s.life = 0.18; s.max = 0.18; s.m.visible = true;
+    s.m.position.copy(player.position); s.m.position.y += 0.85;
+    s.m.rotation.y = player.rotation.y;
+  }
   sfx(n ? 'hit' : 'slash');
 }
 function castWhirlwind() {
@@ -622,8 +630,8 @@ function animate() {
     if (swing > 0) {
       swing -= dt;
       const t = 1 - Math.max(swing, 0) / 0.28;
-      player.userData.pivot.rotation.y = Math.sin(t * Math.PI) * 2.2 + 0.6;
-    }
+      player.userData.pivot.rotation.y = -ATTACK_HALF_ANGLE + t * ATTACK_HALF_ANGLE * 2;
+    } else player.userData.pivot.rotation.y = 0;
     attackCd -= dt; invul -= dt;
     if (mouseDown && attackCd <= 0) attack();
 
