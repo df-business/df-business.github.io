@@ -374,13 +374,14 @@ const keys = {};
 let mouseDown = false;
 let velY = 0, grounded = true, jumps = 0;
 let pointerWasLocked = false;
-let fullscreenPreferred = true, fullscreenPending = false, wasFullscreen = false;
+let fullscreenPreferred = true, fullscreenPending = false, fullscreenExitRequested = false, wasFullscreen = false;
 function lockMouse() {
   try { renderer.domElement.requestPointerLock()?.catch(() => {}); } catch {}
 }
 async function setFullscreen(enabled) {
   if (fullscreenPending) return;
   fullscreenPending = true;
+  fullscreenExitRequested = !enabled;
   try {
     if (enabled && !document.fullscreenElement) await document.documentElement.requestFullscreen();
     else if (!enabled && document.fullscreenElement) await document.exitFullscreen();
@@ -388,11 +389,11 @@ async function setFullscreen(enabled) {
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     if (started && !document.pointerLockElement) lockMouse();
   } catch { console.warn('浏览器未允许全屏切换，可按 F1 重试。'); }
-  finally { fullscreenPending = false; }
+  finally { fullscreenPending = false; fullscreenExitRequested = false; }
 }
 document.addEventListener('fullscreenchange', () => {
   const fullscreen = !!document.fullscreenElement;
-  if (wasFullscreen && !fullscreen && !fullscreenPending && started && document.hasFocus()) returnToStart();
+  if (wasFullscreen && !fullscreen && !(fullscreenPending && fullscreenExitRequested) && started && document.hasFocus()) returnToStart();
   wasFullscreen = fullscreen;
 });
 function returnToStart() {
@@ -406,7 +407,7 @@ function returnToStart() {
 document.addEventListener('pointerlockchange', () => {
   const locked = document.pointerLockElement === renderer.domElement;
   // 部分浏览器会吞掉锁定鼠标时的 Esc，只发送解锁事件。
-  if (pointerWasLocked && !locked && started && !fullscreenPending && document.hasFocus()) returnToStart();
+  if (pointerWasLocked && !locked && started && !(fullscreenPending && fullscreenExitRequested) && document.hasFocus()) returnToStart();
   pointerWasLocked = locked;
 });
 addEventListener('keydown', e => {
